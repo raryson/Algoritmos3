@@ -46,7 +46,7 @@ void selectionSort(int *vetor, int tamanhoDoVetor){
 void calculaSomatorio(int *vetor, int tamanhoDoVetor){
 	int contador = 0, aux, somatorio = 0;
 	
-	printf("# Somatorios:\n");
+	printf("#Somatorios:\n");
 	for(; contador < tamanhoDoVetor; contador++){
 		if(vetor[contador] >= 50000){
 			printf("Somatorio de %d: ERRO", vetor[contador]);
@@ -72,20 +72,82 @@ void printa(int *vetor, int tamanhoDoVetor){
 	}
 }
 
+int mdc(int numero1, int numero2){
+	int resto;
+	
+	while(1){
+		resto = numero1%numero2;
+		if(resto == 0){
+			return(numero2);
+		}else{
+			numero1 = numero2;
+			numero2 = resto;
+		}
+	}
+
+}
+
+void primos(int *vetor, int tamanhoDoVetor){
+	int contador = 0, contador2 = 0, resto = 0, aux1 = 0, aux2 = 0, contador4 = 0;
+	
+	for(;contador < tamanhoDoVetor; contador++){
+		if(contador+1 == tamanhoDoVetor){
+		
+			
+			aux1 = vetor[contador];
+			aux2 = vetor[0];
+			if(aux1 <0){
+				aux1 = -aux1;
+			}
+			if(aux2 <0){
+				aux2 = -aux2;
+			}
+	
+			
+			if(mdc(aux1, aux2) == 1){
+				printf("\n%d e %d: PRIMOS RELATIVOS", vetor[contador], vetor[0] );
+			}else{
+				printf("\n# NAO SAO PRIMOS RELATIVOS %d e %d", vetor[contador], vetor[0]);
+			}
+			break;
+		}
+			
+			aux1 = vetor[contador];
+			aux2 = vetor[contador+1];
+			if(aux1 <0){
+				aux1 = -aux1;
+			}
+			if(aux2 <0){
+				aux2 = -aux2;
+			}
+
+		
+		if(mdc(aux1, aux2) == 1){
+			printf("\n%d e %d: PRIMOS RELATIVOS", vetor[contador], vetor[contador+1] );
+		}else{
+			printf("\n# NAO SAO PRIMOS RELATIVOS %d e %d", vetor[contador], vetor[contador+1]);
+		}
+	}
+	
+}
+
+
+
+
 
 int main(){
 	
 	int numeroElementos, vetorElementos[TAM], contador, numeroInserido, vetorOrdenado[TAM];
 	
-	printf("# Quantos elementos você quer (1 a 10000)");
+	printf("# Quantos elementos voce quer (1 a 10000)\n");
 	scanf("%d", &numeroElementos);
 	
-	if(numeroElementos < 0 || numeroElementos > TAM){
+	if(numeroElementos <= 0 || numeroElementos > TAM){
 		printf("ERRO. TAMANHO INVALIDO\n");
 		return(0);
 	}
 	
-	printf("# Digite %d números positivos ou negativos sem repetir\n", numeroElementos);
+	printf("# Digite %d numeros positivos ou negativos sem repetir\n", numeroElementos);
 	
 	for(contador = 0; contador < numeroElementos; contador++){
 		scanf("%d", &numeroInserido);	
@@ -100,12 +162,13 @@ int main(){
 	}
 	
 	selectionSort(vetorElementos, numeroElementos);
+	printf("\n#Valores Ordenados");
+	printf("\n#Valor Somatorio");
 	calculaSomatorio(vetorElementos, numeroElementos);
+	printf("\n#Verificacao de primos relativos\n");
+	primos(vetorElementos, numeroElementos);
 	
-	
-	
-	
-	
-	
+
+	return(0);
 	
 }
