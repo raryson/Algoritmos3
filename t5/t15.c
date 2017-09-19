@@ -4,7 +4,7 @@
 
 int lestring(char s[], int max)
 {
-    int i = 0;
+    int i = 0, contador= 0;
     char letra;
 
     /* max é o tamanho que "s" pode receber. Deve ser passado o tamanho mesmo, 
@@ -13,7 +13,16 @@ int lestring(char s[], int max)
      */
     for (i = 0; i < (max - 1); i++) {
         /* Lê um único caractere do teclado */
+
         letra = fgetc(stdin);
+    
+        if((letra >= 'a' && letra <= 'z') || (letra >= 'A' && letra <= 'Z') || (letra == 10) || (letra == 36)){
+        	if(letra != 10){
+        		
+        		contador++;	
+			}
+			
+		}
 
 
         /* Veja RARYSON que se encontrou um ENTER (\n) mas não leu nenhum
@@ -34,9 +43,9 @@ int lestring(char s[], int max)
             break;
 
         /* se o caractere lido não é ENTER, apenas o coloca no vetor sting */
-        s[i] = letra;
-    }
-
+     
+    
+}
     /* Sairá do laço anterior por dois motivos:
        a) usuário digitou ENTER e tem ao menos um car válido
        b) mesmo usuário não tendo digitado ENTER, já se leu caracteres suficientes
@@ -49,19 +58,54 @@ int lestring(char s[], int max)
     /* retorna a quantidade de cars lidos (pode ser útil). Então, esta função
        le uma string e retorna o seu tamanho
      */
-    return (i);
+    return (contador);
+}
+
+int transformaMaiuscula(char *frases, int tamanhoDasFrases){
+	int contador;
+	for(contador = 0; contador < tamanhoDasFrases; contador++){
+		if((frases[contador] >= 'A') && (frases[contador] <= 'Z')){
+			continue;
+		}
+		frases[contador] = frases[contador] -32 ;
+	}
+}
+
+int transformaMinuscula(char *frases, int tamanhoDasFrases){
+	int contador;
+	for(contador = 0; contador < tamanhoDasFrases; contador++){
+		frases[contador] = frases[contador] +32 ;
+	}
 }
 
 int cifrar(char *frases, int tamanhoDasFrases){
-	int contador;
-	
-	for(contador = 0; contador <= tamanhoDasFrases; contador++){
-		frases[contador+1] = frases[contador];	
-	}
-	frases[0] = '$';
+	int contador;	
+		
 	for(contador = 0; contador < tamanhoDasFrases; contador++){
-		frases[contador] = frases[contador];	
+		if(frases[contador] == 'z'){
+			frases[contador] = frases[contador] -23;
+		}else if(frases[contador] == 'y'){
+			frases[contador] = frases[contador] -23;	
+		}else if(frases[contador] == 'x'){
+			frases[contador] = frases[contador] -23;	
+		}else{
+			frases[contador] = frases[contador] + 3;
+		}
+		
+			
 	}
+	transformaMaiuscula(frases, tamanhoDasFrases);	
+	
+	
+	for(contador = tamanhoDasFrases; contador >= 0; contador--){
+		frases[contador+1] = frases[contador];
+		if(contador==0){
+			frases[contador] = '$';
+		}
+	
+	}
+
+	return(0);
 }
 
 int decifrar(char *frases, int tamanhoDasFrases){
@@ -101,7 +145,7 @@ int main(){
 		}else{
 			printf("\nTamanho da frase %d", tamanhoDasFrases);
 			cifrar(frases, tamanhoDasFrases);
-			printa(frases, tamanhoDasFrases);
+			printa(frases, tamanhoDasFrases+1);
 			//CIFRAGEM
 		}
 	}
