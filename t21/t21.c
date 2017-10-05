@@ -11,8 +11,9 @@ struct FUNCIONARIO{
 	double salario;
 };
 
-
-
+int safeFflush(){
+	while(fgetc(stdin)!='\n');    
+}
 int lestring(char s[], int max)
 {
     int i = 0;
@@ -61,12 +62,12 @@ int cadastraFunc(struct FUNCIONARIO func){
 	
 	do{
 		printf("#Digite o numero do funcionario:\n");
-		numeroLido = scanf("%d", func.numero);
+		numeroLido = scanf("%d", &func.numero);
 	}while(numeroLido != 1);
 	
 	do{
 		printf("#Digite o salario do funcionario:\n");
-		salarioLido = scanf("%lf", func.salario);
+		salarioLido = scanf("%lf", &func.salario);
 	}while(salarioLido != 1);
 
 }
@@ -78,7 +79,10 @@ int main(int x, char *valor[]){
 		do{
 			printf("#Digite a quantidade de pessoas da sua empresa:\n");
 			scanfQuant = scanf("%d", &quantidade);
-			printf("%i", scanfQuant);
+			printf("%d", scanfQuant);
+			if(scanfQuant == 0){
+				safeFflush();  
+			}
 		} while(quantidade <= 0 || quantidade > MAXFUNC || scanfQuant != 1);	
 	}
 	
