@@ -39,12 +39,12 @@ int lestring(char s[], int max)
     return (i);
 }
 
-int cadastraFunc(struct FUNCIONARIO func){
+int cadastraFunc(struct FUNCIONARIO func[], int cont){
 	int tamanhoDaString, numeroLido;
 	double salarioLido;
 	do{
 		printf("#Digite o nome do funcionario:\n");
-		tamanhoDaString = lestring(func.nome, STRMAX);
+		tamanhoDaString = lestring(func[cont].nome, STRMAX);
 		if(tamanhoDaString <= 0 || tamanhoDaString > STRMAX){
 			printf("Digite um nome valido");
 		}
@@ -53,7 +53,7 @@ int cadastraFunc(struct FUNCIONARIO func){
 	
 	do{
 		printf("#Digite o endereco do funcionario:\n");
-		tamanhoDaString = lestring(func.endereco, STRMAX);
+		tamanhoDaString = lestring(func[cont].endereco, STRMAX);
 		if(tamanhoDaString <= 0 || tamanhoDaString > STRMAX){
 			printf("Digite um endereco valido");
 		}
@@ -62,15 +62,24 @@ int cadastraFunc(struct FUNCIONARIO func){
 	
 	do{
 		printf("#Digite o numero do funcionario:\n");
-		numeroLido = scanf("%d", &func.numero);
+		numeroLido = scanf("%d", &func[cont].numero);
+		if(numeroLido == 0){
+			safeFflush();  
+		}
 	}while(numeroLido != 1);
 	
 	do{
 		printf("#Digite o salario do funcionario:\n");
-		salarioLido = scanf("%lf", &func.salario);
+		salarioLido = scanf("%lf", &func[cont].salario);
+		if(salarioLido == 0){
+			safeFflush();  
+		}
 	}while(salarioLido != 1);
+	
+	printf("#\nFuncionario adicionado com sucesso!\n\n");
 
 }
+
 
 int main(int x, char *valor[]){
 	int quantidade, i, scanfQuant;
@@ -79,16 +88,23 @@ int main(int x, char *valor[]){
 		do{
 			printf("#Digite a quantidade de pessoas da sua empresa:\n");
 			scanfQuant = scanf("%d", &quantidade);
-			printf("%d", scanfQuant);
 			if(scanfQuant == 0){
 				safeFflush();  
 			}
 		} while(quantidade <= 0 || quantidade > MAXFUNC || scanfQuant != 1);	
+	}else{
+		quantidade = atoi(valor[1]);
 	}
 	
 	struct FUNCIONARIO func[MAXFUNC];
+	
 	for(i = 0; i < quantidade; i++){
-		cadastraFunc(func[i]);		
+		cadastraFunc(func, i);		
+	}
+	
+	for(i = 0; i < quantidade; i++){
+		printf("\nNome\tEndereco\tNumero\tSalario\n");
+		printf("%s\t%s\t%d\t%lf\n", func[i].nome, func[i].endereco, func[i].numero, func[i].salario);
 	}
 	
 	return(0);

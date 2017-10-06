@@ -2,6 +2,24 @@
 #include <stdlib.h>
 #define TAM 20000
 
+
+int validaLetras(char s[], char novoVetor[], int max){
+	int i = 0, contador= 0;
+	
+	
+	for(;i < max; i++){
+		if((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z') || (s[i] == 10) || (s[i] == 36)){
+	        if(s[i] != 10 && s[i] != 36){
+	        	novoVetor[contador] = s[i];
+	        	contador++;
+			}
+			
+		}
+	}
+	return (contador);
+
+}
+
 int lestring(char s[], int max)
 {
     int i = 0, contador= 0;
@@ -16,14 +34,7 @@ int lestring(char s[], int max)
 
         letra = fgetc(stdin);
     
-        if((letra >= 'a' && letra <= 'z') || (letra >= 'A' && letra <= 'Z') || (letra == 10) || (letra == 36)){
-        	if(letra != 10){
-        		s[contador] = letra;
-        		contador++;	
-			}
-			
-		}
-
+     
 
         /* Veja RARYSON que se encontrou um ENTER (\n) mas não leu nenhum
          * caractere válido (i continua sendo 0), não aceita. Precisa ler algo.
@@ -41,6 +52,9 @@ int lestring(char s[], int max)
          */
         if (letra == '\n')
             break;
+            
+        s[i] = letra;
+
 
         /* se o caractere lido não é ENTER, apenas o coloca no vetor sting */
      
@@ -58,7 +72,7 @@ int lestring(char s[], int max)
     /* retorna a quantidade de cars lidos (pode ser útil). Então, esta função
        le uma string e retorna o seu tamanho
      */
-    return (contador);
+    return (i);
 }
 
 int transformaMaiuscula(char *frases, int tamanhoDasFrases){
@@ -73,7 +87,11 @@ int transformaMaiuscula(char *frases, int tamanhoDasFrases){
 
 int transformaMinuscula(char *frases, int tamanhoDasFrases){
 	int contador;
+	
 	for(contador = 0; contador < tamanhoDasFrases; contador++){
+		if((frases[contador] >= 'a') && (frases[contador] <= 'z')){
+			continue;
+		}
 		frases[contador] = frases[contador] +32 ;
 	}
 }
@@ -108,12 +126,33 @@ int cifrar(char *frases, int tamanhoDasFrases){
 	return(0);
 }
 
+
+
 int decifrar(char *frases, int tamanhoDasFrases){
 	int contador;
 	
 	for(contador = 0; contador < tamanhoDasFrases; contador++){
-		frases[contador] = frases[contador] - 3;	
+		
+		transformaMinuscula(frases, tamanhoDasFrases);
+		
+		if(frases[contador] == 'a'){
+			frases[contador] = frases[contador] +23;
+		}else if(frases[contador] == 'b'){
+			frases[contador] = frases[contador] +23;	
+		}else if(frases[contador] == 'c'){
+			frases[contador] = frases[contador] +23;	
+		}else{
+			frases[contador] = frases[contador] -3;
+		}
+	
 	}
+	
+
+//	
+//	for(contador = 0; contador < tamanhoDasFrases; contador++){
+//		frases[contador] = frases[contador];
+//	}
+	
 }
 
 int printa(char *frases, int tamanhoDasFrases){
@@ -126,28 +165,179 @@ int printa(char *frases, int tamanhoDasFrases){
 }
 
 
-int main(){
-	int quantidade, cont, tamanhoDasFrases;
-	char frases[TAM];
+int main(int a, char *args[]){
 	
-	printf("Digite quantas frases voce deseja fazer: ");
-	scanf("%d", &quantidade);
+	int quantidade, cont, tamanhoDasFrases, tamanhoDoTexto2 = 0, valorDoPrograma = atoi(args[1]);
+	char frases[TAM], fraseValidada[TAM];
+	int tamanhoDoTexto = 0, tamanhoTotal = 0, verificaValido;
 	
-	if(quantidade < 0){
-		return(1);
-	}
+	int x = 0;
+	if(a == 1){
+		
+		printf("# Digite quantas frases voce deseja fazer: \n");
+		verificaValido = scanf("%d", &quantidade);
+
+		
 	
-	for(cont = 0; cont < quantidade; cont++){
-		tamanhoDasFrases = lestring(frases, TAM);
-		if(frases[0] == '$'){
-			printf("\nTamanho da frase %d", tamanhoDasFrases);
-			//DECIFRAGEM
-		}else{
-			printf("\nTamanho da frase %d", tamanhoDasFrases);
-			cifrar(frases, tamanhoDasFrases);
-			printa(frases, tamanhoDasFrases+1);
-			//CIFRAGEM
+		if(quantidade <= 0 || verificaValido != 1){
+			printf("\nERRO ENTRADA");
+			while(x != 1){
+				printf("\n#Digite novamente\n");
+				while(fgetc(stdin) != '\n'){
+					continue;
+				} 
+				verificaValido = scanf("%d", &quantidade);
+				if(quantidade > 0 && verificaValido == 1){
+					x = 1;
+					continue;
+				} 
+				printf("\nERRO ENTRADA");
+			}
+			
+	
+	
+		
+		
 		}
+		
+		for(cont = 0; cont < quantidade; cont++){
+			printf("# Digite 1 frases com at� 20000 cars para cifrar ou decifrar.\n");
+			tamanhoDasFrases = lestring(frases, TAM);
+			if(frases[0] == '$'){
+	
+				tamanhoTotal += tamanhoDasFrases-1;
+				tamanhoDoTexto2 = validaLetras(frases, fraseValidada, tamanhoDasFrases);
+				tamanhoDoTexto += tamanhoDoTexto2;
+				decifrar(fraseValidada, tamanhoDoTexto2);
+				
+				printa(fraseValidada, tamanhoDoTexto2);
+				printf("\n");
+			
+			}else{
+			
+				tamanhoTotal += tamanhoDasFrases;
+				tamanhoDoTexto2 = validaLetras(frases, fraseValidada, tamanhoDasFrases);
+				tamanhoDoTexto += tamanhoDoTexto2;
+		
+				cifrar(fraseValidada, tamanhoDoTexto2);
+				printa(fraseValidada, tamanhoDoTexto2+1);
+				printf("\n");
+		
+				//CIFRAGEM
+			}
+		}
+		
+		printf("\nCARS %d\nLETRAS %d", tamanhoTotal, tamanhoDoTexto);
+		printf("\nFIM\n");
+		return (0);
+	
+		
+	}
+	if(valorDoPrograma <= 0){
+		printf("ERRO. \"%s\" INVALIDO\n", args[1]);
+		printf("#Digite quantas frases voce deseja fazer: \n");
+		verificaValido = scanf("%d", &quantidade);
+		
+			
+			if(quantidade <= 0){
+					printf("\nERRO. TAMANHO INVALIDO");
+			while(x != 1){
+				printf("\n#Digite novamente\n");
+				while(fgetc(stdin) != '\n'){
+					continue;
+				} 
+				verificaValido = scanf("%d", &quantidade);
+				if(quantidade > 0){
+					x = 1;
+					continue;
+				} 
+				printf("\nERRO. TAMANHO INVALIDO");
+					if(verificaValido !=1){
+					printf("\nERRO ENTRADA");
+			while(y != 1){
+				printf("\n#Digite novamente\n");
+				while(fgetc(stdin) != '\n'){
+					continue;
+				} 
+				verificaValido = scanf("%d", &quantidade);
+				if(quantidade > 0 && verificaValido == 1){
+					y = 1;
+					continue;
+				} 
+				printf("\nERRO ENTRADA");
+			}
+			
+			}
+			}
+			
+		
+			}
+		
+		for(cont = 0; cont < quantidade; cont++){
+			printf("# Digite 1 frases com at� 20000 cars para cifrar ou decifrar.\n");
+			tamanhoDasFrases = lestring(frases, TAM);
+			if(frases[0] == '$'){
+	
+				tamanhoTotal += tamanhoDasFrases-1;
+				tamanhoDoTexto2 = validaLetras(frases, fraseValidada, tamanhoDasFrases);
+				tamanhoDoTexto += tamanhoDoTexto2;
+				decifrar(fraseValidada, tamanhoDoTexto2);
+				
+				printa(fraseValidada, tamanhoDoTexto2);
+				printf("\n");
+			
+			}else{
+			
+				tamanhoTotal += tamanhoDasFrases;
+				tamanhoDoTexto2 = validaLetras(frases, fraseValidada, tamanhoDasFrases);
+				tamanhoDoTexto += tamanhoDoTexto2;
+		
+				cifrar(fraseValidada, tamanhoDoTexto2);
+				printa(fraseValidada, tamanhoDoTexto2+1);
+				printf("\n");
+				
+				//CIFRAGEM
+			}
+		}
+		
+		printf("\n%d CARS DIGITADOS\n%d LETRAS", tamanhoTotal, tamanhoDoTexto);
+		printf("\nFIM\n");
+		return (0);
+	
+	
+	}else{
+		
+			quantidade = valorDoPrograma;
+			for(cont = 0; cont < quantidade; cont++){
+			printf("# Digite 1 frases com at� 20000 cars para cifrar ou decifrar.\n");
+			tamanhoDasFrases = lestring(frases, TAM);
+			if(frases[0] == '$'){
+	
+				tamanhoTotal += tamanhoDasFrases-1;
+				tamanhoDoTexto2 = validaLetras(frases, fraseValidada, tamanhoDasFrases);
+				tamanhoDoTexto += tamanhoDoTexto2;
+				decifrar(fraseValidada, tamanhoDoTexto2);
+				
+				printa(fraseValidada, tamanhoDoTexto2);
+				printf("\n");
+			
+			}else{
+			
+				tamanhoTotal += tamanhoDasFrases;
+				tamanhoDoTexto2 = validaLetras(frases, fraseValidada, tamanhoDasFrases);
+				tamanhoDoTexto += tamanhoDoTexto2;
+		
+				cifrar(fraseValidada, tamanhoDoTexto2);
+				printa(fraseValidada, tamanhoDoTexto2+1);
+				printf("\n");
+				
+				//CIFRAGEM
+			}
+		}
+		
+		printf("\n%d CARS DIGITADOS\n%d LETRAS", tamanhoTotal, tamanhoDoTexto);
+		printf("\nFIM\n");
+		return (0);
 	}
 	
 	
