@@ -11,6 +11,21 @@ struct FUNCIONARIO{
 	double salario;
 };
 
+int strCompare(char str1[], char str2[]){
+	int contador;
+	
+	for(contador = 0; str1[contador]; contador++){
+		  
+		if(str1[contador] - str2[contador] == 0){
+			continue;
+		}else{
+			return(str1[contador] - str2[contador]);		
+		}
+		
+	}
+	return(str1[contador] - str2[contador]);	
+}
+
 int safeFflush(){
 	while(fgetc(stdin)!='\n');    
 }
@@ -46,7 +61,7 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 		printf("#Digite o nome do funcionario:\n");
 		tamanhoDaString = lestring(func[cont].nome, STRMAX);
 		if(tamanhoDaString <= 0 || tamanhoDaString > STRMAX){
-			printf("Digite um nome valido");
+			printf("ERRO entrada invalida\n");
 		}
 	}while(tamanhoDaString == 0 || tamanhoDaString > STRMAX);
 	
@@ -55,7 +70,7 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 		printf("#Digite o endereco do funcionario:\n");
 		tamanhoDaString = lestring(func[cont].endereco, STRMAX);
 		if(tamanhoDaString <= 0 || tamanhoDaString > STRMAX){
-			printf("Digite um endereco valido");
+			printf("ERRO entrada invalida\n");
 		}
 	}while(tamanhoDaString == 0 || tamanhoDaString > STRMAX);
 	
@@ -64,6 +79,7 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 		printf("#Digite o numero do funcionario:\n");
 		numeroLido = scanf("%d", &func[cont].numero);
 		if(numeroLido == 0){
+			printf("ERRO entrada invalida\n");
 			safeFflush();  
 		}
 	}while(numeroLido != 1);
@@ -72,6 +88,7 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 		printf("#Digite o salario do funcionario:\n");
 		salarioLido = scanf("%lf", &func[cont].salario);
 		if(salarioLido == 0){
+			printf("ERRO entrada invalida\n");
 			safeFflush();  
 		}
 	}while(salarioLido != 1);
@@ -85,10 +102,12 @@ int main(int x, char *valor[]){
 	int quantidade, i, scanfQuant;
 	
 	if((atoi(valor[1]) <= 0) || (atoi(valor[1]) > MAXFUNC)){
+		printf("ERRO %s\n", valor[1]);
 		do{
 			printf("#Digite a quantidade de pessoas da sua empresa:\n");
 			scanfQuant = scanf("%d", &quantidade);
 			if(scanfQuant == 0){
+				printf("ERRO entrada invalida\n");
 				safeFflush();  
 			}
 		} while(quantidade <= 0 || quantidade > MAXFUNC || scanfQuant != 1);	
@@ -106,6 +125,10 @@ int main(int x, char *valor[]){
 		printf("\nNome\tEndereco\tNumero\tSalario\n");
 		printf("%s\t%s\t%d\t%lf\n", func[i].nome, func[i].endereco, func[i].numero, func[i].salario);
 	}
+	
+	int qualEmaior = strCompare(func[0].nome, func[1].nome);
+	
+	printf("O maior e %d");
 	
 	return(0);
 	
