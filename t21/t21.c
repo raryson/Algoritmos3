@@ -11,6 +11,7 @@ struct FUNCIONARIO{
 	double salario;
 };
 
+
 int strCompare(char str1[], char str2[]){
 	int contador;
 	
@@ -24,6 +25,20 @@ int strCompare(char str1[], char str2[]){
 		
 	}
 	return(str1[contador] - str2[contador]);	
+}
+
+int strCopy(char str1[], char str2[]){
+	int contador;
+	
+	for(contador = 0; str1[contador]; contador++){
+		str1[contador] = 0;
+	}
+	
+	for(contador = 0; str2[contador]; contador++){
+		str1[contador] = str2[contador];
+	}
+	str1[contador+1] = 0;
+	return(contador);
 }
 
 int safeFflush(){
@@ -93,16 +108,20 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 		}
 	}while(salarioLido != 1);
 	
-	printf("#\nFuncionario adicionado com sucesso!\n\n");
+	printf("\n#Funcionario adicionado com sucesso!\n\n");
 
 }
 
 
 int main(int x, char *valor[]){
-	int quantidade, i, scanfQuant;
+	int quantidade, i, scanfQuant, 	qualEMaior, auxInt;
+	double auxDouble, qualEMaiorDouble, contSalario = 0;
+	char aux[STRMAX];
 	
 	if((atoi(valor[1]) <= 0) || (atoi(valor[1]) > MAXFUNC)){
-		printf("ERRO %s\n", valor[1]);
+		if(valor[1] != NULL){
+			printf("ERRO %s\n", valor[1]);
+		}
 		do{
 			printf("#Digite a quantidade de pessoas da sua empresa:\n");
 			scanfQuant = scanf("%d", &quantidade);
@@ -120,15 +139,114 @@ int main(int x, char *valor[]){
 	for(i = 0; i < quantidade; i++){
 		cadastraFunc(func, i);		
 	}
-	
-	for(i = 0; i < quantidade; i++){
-		printf("\nNome\tEndereco\tNumero\tSalario\n");
-		printf("%s\t%s\t%d\t%lf\n", func[i].nome, func[i].endereco, func[i].numero, func[i].salario);
+
+
+	//ordenação de ordem alfabetica
+	for(i = 1; i < quantidade; i++){
+		qualEMaior =  strCompare(func[i-1].nome, func[i].nome);
+		
+		if(qualEMaior > 0){
+			//troco nome
+			strCopy(aux, func[i-1].nome);
+			strCopy(func[i-1].nome, func[i].nome);
+			strCopy(func[i].nome, aux);
+			
+			//trocop endereço
+			strCopy(aux, func[i-1].endereco);
+			strCopy(func[i-1].endereco, func[i].endereco);
+			strCopy(func[i].endereco, aux);
+			
+			//troco numero
+			auxInt = func[i-1].numero;
+			func[i-1].numero = func[i].numero;
+			func[i].numero = auxInt;
+			
+			//troco salario
+			auxDouble = func[i-1].salario;
+			func[i-1].salario = func[i].salario;
+			func[i].salario = auxDouble;
+			
+		}
 	}
 	
-	int qualEmaior = strCompare(func[0].nome, func[1].nome);
+	printf("#\nVALORES ORDENADOS POR ORDEM ALFABETICA\n");			
+	for(i = 0; i < quantidade; i++){
+		
+		printf("%06d %s, %s, R$ %.2lf\n", func[i].numero, func[i].nome, func[i].endereco, func[i].salario);
+	}
 	
-	printf("O maior e %d");
+	if(quantidade < 10){
+		//lista o numero de quantidade
+		for(i = 1; i < quantidade; i++){
+			qualEMaiorDouble =  func[i].salario - func[i-1].salario;
+			if(qualEMaiorDouble > 0){
+				
+					//troco nome
+			strCopy(aux, func[i-1].nome);
+			strCopy(func[i-1].nome, func[i].nome);
+			strCopy(func[i].nome, aux);
+			
+			//trocop endereço
+			strCopy(aux, func[i-1].endereco);
+			strCopy(func[i-1].endereco, func[i].endereco);
+			strCopy(func[i].endereco, aux);
+			
+			//troco numero
+			auxInt = func[i-1].numero;
+			func[i-1].numero = func[i].numero;
+			func[i].numero = auxInt;
+				
+				auxDouble = func[i-1].salario;
+				func[i-1].salario = func[i].salario;
+				func[i].salario = auxDouble;
+			}
+		}
+	}else{
+		//lista os 10
+		for(i = 1; i < quantidade; i++){
+			qualEMaiorDouble =  func[i].salario - func[i-1].salario;
+			if(qualEMaiorDouble > 0){
+				
+					//troco nome
+			strCopy(aux, func[i-1].nome);
+			strCopy(func[i-1].nome, func[i].nome);
+			strCopy(func[i].nome, aux);
+			
+			//trocop endereço
+			strCopy(aux, func[i-1].endereco);
+			strCopy(func[i-1].endereco, func[i].endereco);
+			strCopy(func[i].endereco, aux);
+			
+			//troco numero
+			auxInt = func[i-1].numero;
+			func[i-1].numero = func[i].numero;
+			func[i].numero = auxInt;
+				auxDouble = func[i-1].salario;
+				func[i-1].salario = func[i].salario;
+				func[i].salario = auxDouble;
+			}
+		}
+	}
+
+	printf("#\nTOP 10 SALARIOS TUCHUTUHTUCHU\n");
+	if(quantidade < 10){
+		for(i = 0; i < quantidade; i++){
+			printf("R$\t%.2lf %s\n", func[i].salario, func[i].nome);
+		}
+	
+	}else{
+		for(i = 0; i < 10; i++){
+			printf("R$\t%.2lf %s\n", func[i].salario, func[i].nome);
+		}
+	
+	}
+	
+	for(i = 0; i < quantidade; i++){
+		contSalario += func[i].salario;
+	}
+	
+	printf("#Folha de salario total:\n");
+	printf("R$ %.2lf", contSalario);
 	
 	return(0);
 	
