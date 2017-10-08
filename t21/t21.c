@@ -27,6 +27,16 @@ int strCompare(char str1[], char str2[]){
 	return(str1[contador] - str2[contador]);	
 }
 
+int transformaMaiuscula(char *frases){
+	int contador;
+	for(contador = 0; frases[contador]; contador++){
+		if((frases[contador] >= 'A') && (frases[contador] <= 'Z') || frases[contador] == ' '){
+			continue;
+		}
+		frases[contador] = frases[contador] -32 ;
+	}
+}
+
 int strCopy(char str1[], char str2[]){
 	int contador;
 	
@@ -80,6 +90,7 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 		}
 	}while(tamanhoDaString == 0 || tamanhoDaString > STRMAX);
 	
+	transformaMaiuscula(func[cont].nome);
 	
 	do{
 		printf("#Digite o endereco do funcionario:\n");
@@ -169,7 +180,7 @@ int main(int x, char *valor[]){
 		}
 	}
 	
-	printf("#\nVALORES ORDENADOS POR ORDEM ALFABETICA\n");			
+	printf("\n#VALORES ORDENADOS POR ORDEM ALFABETICA\n");			
 	for(i = 0; i < quantidade; i++){
 		
 		printf("%06d %s, %s, R$ %.2lf\n", func[i].numero, func[i].nome, func[i].endereco, func[i].salario);
@@ -228,15 +239,15 @@ int main(int x, char *valor[]){
 		}
 	}
 
-	printf("#\nTOP 10 SALARIOS TUCHUTUHTUCHU\n");
+	printf("\n#TOP 10 SALARIOS TUCHUTUHTUCHU\n");
 	if(quantidade < 10){
 		for(i = 0; i < quantidade; i++){
-			printf("R$\t%.2lf %s\n", func[i].salario, func[i].nome);
+			printf("R$   %.2lf %s\n", func[i].salario, func[i].nome);
 		}
 	
 	}else{
 		for(i = 0; i < 10; i++){
-			printf("R$\t%.2lf %s\n", func[i].salario, func[i].nome);
+			printf("R$   %.2lf %s\n", func[i].salario, func[i].nome);
 		}
 	
 	}
