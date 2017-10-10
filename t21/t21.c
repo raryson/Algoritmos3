@@ -125,7 +125,7 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 
 
 int main(int x, char *valor[]){
-	int quantidade, i, scanfQuant, 	qualEMaior, auxInt;
+	int quantidade, i, scanfQuant, 	qualEMaior, auxInt, j;
 	double auxDouble, qualEMaiorDouble, contSalario = 0;
 	char aux[STRMAX];
 	
@@ -155,30 +155,34 @@ int main(int x, char *valor[]){
 
 
 	//ordenação de ordem alfabetica
-	for(i = 1; i < quantidade; i++){
-		qualEMaior =  strCompare(func[i-1].nome, func[i].nome);
-		
-		if(qualEMaior > 0){
-			//troco nome
-			strCopy(aux, func[i-1].nome);
-			strCopy(func[i-1].nome, func[i].nome);
-			strCopy(func[i].nome, aux);
+	
+	for(j = 1; j < quantidade; j++){
+
+		for(i = 1; i < quantidade; i++){
+			qualEMaior =  strCompare(func[i-1].nome, func[i].nome);
 			
-			//trocop endereço
-			strCopy(aux, func[i-1].endereco);
-			strCopy(func[i-1].endereco, func[i].endereco);
-			strCopy(func[i].endereco, aux);
-			
-			//troco numero
-			auxInt = func[i-1].numero;
-			func[i-1].numero = func[i].numero;
-			func[i].numero = auxInt;
-			
-			//troco salario
-			auxDouble = func[i-1].salario;
-			func[i-1].salario = func[i].salario;
-			func[i].salario = auxDouble;
-			
+			if(qualEMaior > 0){
+				//troco nome
+				strCopy(aux, func[i-1].nome);
+				strCopy(func[i-1].nome, func[i].nome);
+				strCopy(func[i].nome, aux);
+				
+				//trocop endereço
+				strCopy(aux, func[i-1].endereco);
+				strCopy(func[i-1].endereco, func[i].endereco);
+				strCopy(func[i].endereco, aux);
+				
+				//troco numero
+				auxInt = func[i-1].numero;
+				func[i-1].numero = func[i].numero;
+				func[i].numero = auxInt;
+				
+				//troco salario
+				auxDouble = func[i-1].salario;
+				func[i-1].salario = func[i].salario;
+				func[i].salario = auxDouble;
+				
+			}
 		}
 	}
 	
@@ -190,53 +194,58 @@ int main(int x, char *valor[]){
 	
 	if(quantidade < 10){
 		//lista o numero de quantidade
-		for(i = 1; i < quantidade; i++){
-			qualEMaiorDouble =  func[i].salario - func[i-1].salario;
-			if(qualEMaiorDouble > 0){
+		for(j = 1; j < quantidade; j++){
+			for(i = 1; i < quantidade; i++){
+				qualEMaiorDouble =  func[i].salario - func[i-1].salario;
+				if(qualEMaiorDouble > 0){
+					
+						//troco nome
+				strCopy(aux, func[i-1].nome);
+				strCopy(func[i-1].nome, func[i].nome);
+				strCopy(func[i].nome, aux);
 				
-					//troco nome
-			strCopy(aux, func[i-1].nome);
-			strCopy(func[i-1].nome, func[i].nome);
-			strCopy(func[i].nome, aux);
-			
-			//trocop endereço
-			strCopy(aux, func[i-1].endereco);
-			strCopy(func[i-1].endereco, func[i].endereco);
-			strCopy(func[i].endereco, aux);
-			
-			//troco numero
-			auxInt = func[i-1].numero;
-			func[i-1].numero = func[i].numero;
-			func[i].numero = auxInt;
+				//trocop endereço
+				strCopy(aux, func[i-1].endereco);
+				strCopy(func[i-1].endereco, func[i].endereco);
+				strCopy(func[i].endereco, aux);
 				
-				auxDouble = func[i-1].salario;
-				func[i-1].salario = func[i].salario;
-				func[i].salario = auxDouble;
+				//troco numero
+				auxInt = func[i-1].numero;
+				func[i-1].numero = func[i].numero;
+				func[i].numero = auxInt;
+					
+					auxDouble = func[i-1].salario;
+					func[i-1].salario = func[i].salario;
+					func[i].salario = auxDouble;
+				}
 			}
 		}
 	}else{
 		//lista os 10
-		for(i = 1; i < quantidade; i++){
-			qualEMaiorDouble =  func[i].salario - func[i-1].salario;
-			if(qualEMaiorDouble > 0){
+		for(j = 1; j < quantidade; j++){
+
+			for(i = 1; i < quantidade; i++){
+				qualEMaiorDouble =  func[i].salario - func[i-1].salario;
+				if(qualEMaiorDouble > 0){
+					
+						//troco nome
+				strCopy(aux, func[i-1].nome);
+				strCopy(func[i-1].nome, func[i].nome);
+				strCopy(func[i].nome, aux);
 				
-					//troco nome
-			strCopy(aux, func[i-1].nome);
-			strCopy(func[i-1].nome, func[i].nome);
-			strCopy(func[i].nome, aux);
-			
-			//trocop endereço
-			strCopy(aux, func[i-1].endereco);
-			strCopy(func[i-1].endereco, func[i].endereco);
-			strCopy(func[i].endereco, aux);
-			
-			//troco numero
-			auxInt = func[i-1].numero;
-			func[i-1].numero = func[i].numero;
-			func[i].numero = auxInt;
-				auxDouble = func[i-1].salario;
-				func[i-1].salario = func[i].salario;
-				func[i].salario = auxDouble;
+				//trocop endereço
+				strCopy(aux, func[i-1].endereco);
+				strCopy(func[i-1].endereco, func[i].endereco);
+				strCopy(func[i].endereco, aux);
+				
+				//troco numero
+				auxInt = func[i-1].numero;
+				func[i-1].numero = func[i].numero;
+				func[i].numero = auxInt;
+					auxDouble = func[i-1].salario;
+					func[i-1].salario = func[i].salario;
+					func[i].salario = auxDouble;
+				}
 			}
 		}
 	}
