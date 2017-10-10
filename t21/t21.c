@@ -30,7 +30,7 @@ int strCompare(char str1[], char str2[]){
 int transformaMaiuscula(char *frases){
 	int contador;
 	for(contador = 0; frases[contador]; contador++){
-		if((frases[contador] >= 'A') && (frases[contador] <= 'Z') || frases[contador] == ' '){
+		if((frases[contador] >= 'A') && (frases[contador] <= 'Z') || frases[contador] == ' ' || (frases[contador] >= '1' && frases[contador] <= '9' )){
 			continue;
 		}
 		frases[contador] = frases[contador] -32 ;
@@ -139,6 +139,8 @@ int main(int x, char *valor[]){
 			if(scanfQuant == 0){
 				printf("ERRO entrada invalida\n");
 				safeFflush();  
+			}else if(quantidade > MAXFUNC || quantidade <= 0){
+				printf("ERRO %d\n", quantidade);
 			}
 		} while(quantidade <= 0 || quantidade > MAXFUNC || scanfQuant != 1);	
 	}else{
@@ -257,7 +259,9 @@ int main(int x, char *valor[]){
 	}
 	
 	printf("#Folha de salario total:\n");
-	printf("R$ %.2lf", contSalario);
+	printf("\nR$ %.2lf\n", contSalario);
+	
+	printf("#FIM");
 	
 	return(0);
 	
