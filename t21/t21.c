@@ -37,14 +37,14 @@ int transformaMaiuscula(char *frases){
 	}
 }
 
-int strCopy(char str1[], char str2[]){
+int strCopy(char str1[], char str2[], int tamanho){
 	int contador;
 	
-	for(contador = 0; str1[contador]; contador++){
+	for(contador = 0; contador < tamanho; contador++){
 		str1[contador] = 0;
 	}
 	
-	for(contador = 0; str2[contador]; contador++){
+	for(contador = 0;  contador < tamanho; contador++){
 		str1[contador] = str2[contador];
 	}
 	str1[contador+1] = 0;
@@ -163,14 +163,14 @@ int main(int x, char *valor[]){
 			
 			if(qualEMaior > 0){
 				//troco nome
-				strCopy(aux, func[i-1].nome);
-				strCopy(func[i-1].nome, func[i].nome);
-				strCopy(func[i].nome, aux);
+				strCopy(aux, func[i-1].nome, sizeof(aux));
+				strCopy(func[i-1].nome, func[i].nome, sizeof(func[i-1].nome));
+				strCopy(func[i].nome, aux, sizeof(func[i].nome));
 				
 				//trocop endereço
-				strCopy(aux, func[i-1].endereco);
-				strCopy(func[i-1].endereco, func[i].endereco);
-				strCopy(func[i].endereco, aux);
+				strCopy(aux, func[i-1].endereco,  sizeof(aux));
+				strCopy(func[i-1].endereco, func[i].endereco, sizeof(func[i-1].endereco));
+				strCopy(func[i].endereco, aux, sizeof(func[i].endereco));
 				
 				//troco numero
 				auxInt = func[i-1].numero;
@@ -200,14 +200,14 @@ int main(int x, char *valor[]){
 				if(qualEMaiorDouble > 0){
 					
 						//troco nome
-				strCopy(aux, func[i-1].nome);
-				strCopy(func[i-1].nome, func[i].nome);
-				strCopy(func[i].nome, aux);
+				strCopy(aux, func[i-1].nome,  sizeof(aux));
+				strCopy(func[i-1].nome, func[i].nome, sizeof(func[i-1].nome));
+				strCopy(func[i].nome, aux, sizeof(func[i].nome));
 				
 				//trocop endereço
-				strCopy(aux, func[i-1].endereco);
-				strCopy(func[i-1].endereco, func[i].endereco);
-				strCopy(func[i].endereco, aux);
+				strCopy(aux, func[i-1].endereco,  sizeof(aux));
+				strCopy(func[i-1].endereco, func[i].endereco,  sizeof(func[i-1].endereco));
+				strCopy(func[i].endereco, aux, sizeof(func[i].endereco));
 				
 				//troco numero
 				auxInt = func[i-1].numero;
@@ -229,14 +229,14 @@ int main(int x, char *valor[]){
 				if(qualEMaiorDouble > 0){
 					
 						//troco nome
-				strCopy(aux, func[i-1].nome);
-				strCopy(func[i-1].nome, func[i].nome);
-				strCopy(func[i].nome, aux);
+				strCopy(aux, func[i-1].nome, sizeof(aux));
+				strCopy(func[i-1].nome, func[i].nome, sizeof(func[i-1].nome));
+				strCopy(func[i].nome, aux, sizeof(func[i].endereco));
 				
 				//trocop endereço
-				strCopy(aux, func[i-1].endereco);
-				strCopy(func[i-1].endereco, func[i].endereco);
-				strCopy(func[i].endereco, aux);
+				strCopy(aux, func[i-1].endereco, sizeof(aux));
+				strCopy(func[i-1].endereco, func[i].endereco, sizeof(func[i-1].nome));
+				strCopy(func[i].endereco, aux, sizeof(func[i].endereco));
 				
 				//troco numero
 				auxInt = func[i-1].numero;
