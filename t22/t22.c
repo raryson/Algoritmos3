@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAXFUNC 1000
-#define STRMAX  500
+
+#define STRMAX  100
 
 
 struct FUNCIONARIO{
-	char nome[STRMAX];
-	char endereco[STRMAX];
+	char nome[STRMAX+1];
+	char *endereco;
 	int numero;
 	double salario;
 };
@@ -81,6 +81,7 @@ int lestring(char s[], int max)
 
 int cadastraFunc(struct FUNCIONARIO func[], int cont){
 	int tamanhoDaString, numeroLido;
+	char aux[2000];
 	double salarioLido;
 	do{
 		printf("#Digite o nome do funcionario:\n");
@@ -94,7 +95,10 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 	
 	do{
 		printf("#Digite o endereco do funcionario:\n");
-		tamanhoDaString = lestring(func[cont].endereco, STRMAX);
+		tamanhoDaString = lestring(aux, 20000);
+		func[cont].endereco  = malloc(tamanhoDaString * sizeof(func[cont].endereco ) +1);
+		strCopy(func[cont].endereco, aux, tamanhoDaString+1);
+		
 		if(tamanhoDaString <= 0 || tamanhoDaString > STRMAX){
 			printf("ERRO entrada invalida\n");
 		}
@@ -199,22 +203,29 @@ int main(int x, char *valor[]){
 	int quantidade, i, scanfQuant, 	qualEMaior, auxInt, j;
 	double auxDouble, qualEMaiorDouble, contSalario = 0;
 	char aux[STRMAX];
-	struct FUNCIONARIO func[MAXFUNC];
+	struct FUNCIONARIO *func;
 	
-	if((atoi(valor[1]) <= 0) || (atoi(valor[1]) > MAXFUNC)){
+
+	
+	if((atoi(valor[1]) <= 0) )  {
 		if(valor[1] != NULL){
 			printf("ERRO %s\n", valor[1]);
 		}
+			
 		do{
 			printf("#Digite a quantidade de pessoas da sua empresa:\n");
 			scanfQuant = scanf("%d", &quantidade);
+			func = malloc(quantidade * (sizeof(struct FUNCIONARIO)));
 			if(scanfQuant == 0){
 				printf("ERRO entrada invalida\n");
 				safeFflush();  
-			}else if(quantidade > MAXFUNC || quantidade <= 0){
+			}else if(quantidade <= 0){
 				printf("ERRO %d\n", quantidade);
+			}else if(func == NULL){
+				printf("ERRO alocacao\n");
+				printf("#Erro, faltou espaco em memoria\n");
 			}
-		} while(quantidade <= 0 || quantidade > MAXFUNC || scanfQuant != 1);	
+		} while(quantidade <= 0 || scanfQuant != 1);	
 	}else{
 		quantidade = atoi(valor[1]);
 	}
