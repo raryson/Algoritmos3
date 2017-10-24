@@ -123,77 +123,49 @@ int cadastraFunc(struct FUNCIONARIO func[], int cont){
 
 }
 
-
-int main(int x, char *valor[]){
-	int quantidade, i, scanfQuant, 	qualEMaior, auxInt, j;
-	double auxDouble, qualEMaiorDouble, contSalario = 0;
-	char aux[STRMAX];
-	
-	if((atoi(valor[1]) <= 0) || (atoi(valor[1]) > MAXFUNC)){
-		if(valor[1] != NULL){
-			printf("ERRO %s\n", valor[1]);
-		}
-		do{
-			printf("#Digite a quantidade de pessoas da sua empresa:\n");
-			scanfQuant = scanf("%d", &quantidade);
-			if(scanfQuant == 0){
-				printf("ERRO entrada invalida\n");
-				safeFflush();  
-			}else if(quantidade > MAXFUNC || quantidade <= 0){
-				printf("ERRO %d\n", quantidade);
-			}
-		} while(quantidade <= 0 || quantidade > MAXFUNC || scanfQuant != 1);	
-	}else{
-		quantidade = atoi(valor[1]);
-	}
-	
-	struct FUNCIONARIO func[MAXFUNC];
-	
-	for(i = 0; i < quantidade; i++){
-		cadastraFunc(func, i);		
-	}
-
-
-	//ordenação de ordem alfabetica
-	
-	for(j = 1; j < quantidade; j++){
-
-		for(i = 1; i < quantidade; i++){
-			qualEMaior =  strCompare(func[i-1].nome, func[i].nome);
-			
-			if(qualEMaior > 0){
-				//troco nome
-				strCopy(aux, func[i-1].nome, sizeof(aux));
-				strCopy(func[i-1].nome, func[i].nome, sizeof(func[i-1].nome));
-				strCopy(func[i].nome, aux, sizeof(func[i].nome));
-				
-				//trocop endereço
-				strCopy(aux, func[i-1].endereco,  sizeof(aux));
-				strCopy(func[i-1].endereco, func[i].endereco, sizeof(func[i-1].endereco));
-				strCopy(func[i].endereco, aux, sizeof(func[i].endereco));
-				
-				//troco numero
-				auxInt = func[i-1].numero;
-				func[i-1].numero = func[i].numero;
-				func[i].numero = auxInt;
-				
-				//troco salario
-				auxDouble = func[i-1].salario;
-				func[i-1].salario = func[i].salario;
-				func[i].salario = auxDouble;
-				
-			}
-		}
-	}
-	
-	printf("\n#VALORES ORDENADOS POR ORDEM ALFABETICA\n");			
-	for(i = 0; i < quantidade; i++){
+int ordenaStructEmOrdemAlfabetica(struct FUNCIONARIO func[], int quantidade)
+{	
+		int i = 0, j = 0, qualEMaior = 0, auxInt = 0;
+		double auxDouble = 0;
+		char aux[STRMAX];
 		
-		printf("%06d %s, %s, R$ %.2lf\n", func[i].numero, func[i].nome, func[i].endereco, func[i].salario);
+		for(j = 1; j < quantidade; j++){
+
+			for(i = 1; i < quantidade; i++){
+				qualEMaior =  strCompare(func[i-1].nome, func[i].nome);
+				
+				if(qualEMaior > 0){
+					//troco nome
+					strCopy(aux, func[i-1].nome, sizeof(aux));
+					strCopy(func[i-1].nome, func[i].nome, sizeof(func[i-1].nome));
+					strCopy(func[i].nome, aux, sizeof(func[i].nome));
+					
+					//trocop endereço
+					strCopy(aux, func[i-1].endereco,  sizeof(aux));
+					strCopy(func[i-1].endereco, func[i].endereco, sizeof(func[i-1].endereco));
+					strCopy(func[i].endereco, aux, sizeof(func[i].endereco));
+					
+					//troco numero
+					auxInt = func[i-1].numero;
+					func[i-1].numero = func[i].numero;
+					func[i].numero = auxInt;
+					
+					//troco salario
+					auxDouble = func[i-1].salario;
+					func[i-1].salario = func[i].salario;
+					func[i].salario = auxDouble;
+					
+				}
+			}
 	}
 	
-	if(quantidade < 10){
-		//lista o numero de quantidade
+}
+
+int ordenaStructSalario(struct FUNCIONARIO func[], int quantidade){
+		int i = 0, j = 0, qualEMaiorDouble = 0, auxInt = 0;
+		double auxDouble = 0;
+		char aux[STRMAX];
+		
 		for(j = 1; j < quantidade; j++){
 			for(i = 1; i < quantidade; i++){
 				qualEMaiorDouble =  func[i].salario - func[i-1].salario;
@@ -220,34 +192,53 @@ int main(int x, char *valor[]){
 				}
 			}
 		}
+}
+
+
+int main(int x, char *valor[]){
+	int quantidade, i, scanfQuant, 	qualEMaior, auxInt, j;
+	double auxDouble, qualEMaiorDouble, contSalario = 0;
+	char aux[STRMAX];
+	struct FUNCIONARIO func[MAXFUNC];
+	
+	if((atoi(valor[1]) <= 0) || (atoi(valor[1]) > MAXFUNC)){
+		if(valor[1] != NULL){
+			printf("ERRO %s\n", valor[1]);
+		}
+		do{
+			printf("#Digite a quantidade de pessoas da sua empresa:\n");
+			scanfQuant = scanf("%d", &quantidade);
+			if(scanfQuant == 0){
+				printf("ERRO entrada invalida\n");
+				safeFflush();  
+			}else if(quantidade > MAXFUNC || quantidade <= 0){
+				printf("ERRO %d\n", quantidade);
+			}
+		} while(quantidade <= 0 || quantidade > MAXFUNC || scanfQuant != 1);	
+	}else{
+		quantidade = atoi(valor[1]);
+	}
+	
+
+	
+	for(i = 0; i < quantidade; i++){
+		cadastraFunc(func, i);		
+	}
+
+	ordenaStructEmOrdemAlfabetica(func, quantidade);
+	
+	printf("\n#VALORES ORDENADOS POR ORDEM ALFABETICA\n");			
+	for(i = 0; i < quantidade; i++){
+		
+		printf("%06d %s, %s, R$ %.2lf\n", func[i].numero, func[i].nome, func[i].endereco, func[i].salario);
+	}
+	
+	if(quantidade < 10){
+		//lista o numero de quantidade
+		ordenaStructSalario(func, quantidade);
 	}else{
 		//lista os 10
-		for(j = 1; j < quantidade; j++){
-
-			for(i = 1; i < quantidade; i++){
-				qualEMaiorDouble =  func[i].salario - func[i-1].salario;
-				if(qualEMaiorDouble > 0){
-					
-						//troco nome
-				strCopy(aux, func[i-1].nome, sizeof(aux));
-				strCopy(func[i-1].nome, func[i].nome, sizeof(func[i-1].nome));
-				strCopy(func[i].nome, aux, sizeof(func[i].endereco));
-				
-				//trocop endereço
-				strCopy(aux, func[i-1].endereco, sizeof(aux));
-				strCopy(func[i-1].endereco, func[i].endereco, sizeof(func[i-1].nome));
-				strCopy(func[i].endereco, aux, sizeof(func[i].endereco));
-				
-				//troco numero
-				auxInt = func[i-1].numero;
-				func[i-1].numero = func[i].numero;
-				func[i].numero = auxInt;
-					auxDouble = func[i-1].salario;
-					func[i-1].salario = func[i].salario;
-					func[i].salario = auxDouble;
-				}
-			}
-		}
+		ordenaStructSalario(func, quantidade);
 	}
 
 	printf("\n#TOP 10 SALARIOS TUCHUTUHTUCHU\n");
