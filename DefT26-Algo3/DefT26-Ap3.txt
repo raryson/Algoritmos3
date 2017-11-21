@@ -1,0 +1,139 @@
+TITULO: Definição do Exercício T26
+DATA: 14/Novembro/2017
+
+Pode ser feito no máximo em TRIOS, desde de que iniciados na aula
+Quem faltar a esta aula deverá, necessariamente, realizar 
+individualmente.
+
+
+Objetivo: Manipulação avançada de arquivos com estruturas 
+(agora mais avançada ainda), macros de pre-processamento.
+
+**** O SISTEMA DE TESTES AUTOMÁTICOS NÃO SUPORTA ARQUIVOS ****
+
+Ainda é sobre a manipulação de FUNCIONÁRIOS.
+
+Considere arquivos BINÁRIOS apenas.
+
+EM TODOS OS CÓDIGOS, SEMPRE USE ESTA ESTRUTURA, COMO ELA ESTÁ AQUI:
+
+#define STRMAX 	100
+struct FUNC {
+    char nome[STRMAX + 1];
+    char endereco[STRMAX+1];
+    int reg;
+    double sal;
+    char top;
+};
+
+Se você usar um byte a mais ou a menos para um nome, não vai ler corretamente.
+
+Use o T25 que o professor irá disponibilizar, para gerar um arquivo
+binário com dezenas ou centenas de funcionários. Considere ler o arquivo dadosT26.txt
+que será disponibilizado.
+
+A primeira coisa que você deve fazer é gerar um binário:
+
+C:\> RespT25.exe dadosT26.txt lixo.txt
+(o parâmetro lixo.txt aqui é apenas porque o T25 exige isso)
+
+Cadastre os nomes dos integrantes do grupo e dados que quiserem
+como os próximos do dados.bin.
+
+Faça isso SOMENTE para ter o teu dados.bin gerado, nada mais.
+
+Lembre-se de APAGAR o dados.bin cada vez que você for executar o
+RespT25, senão ele irá duplicar os dados (o T26 trabalha com qualquer
+nome de arquivo, mas o T25 é dados.bin FIXO)
+
+Baixe o programa de teste do professor:
+
+		leFuncBinT26.c 
+
+Compile e execute. Ele apenas irá te mostrar se você gerou corretamente
+o arquivo dados.bin.
+
+C:\> leFuncBinT26.exe dados.bin<ENTER>
+Foram lidos 2 funcionários de dados.bin:
+000345 ELGIO , David, R$ 1200.00
+000120 FULANO, Rua tal, R$ 356.00
+
+C:\>
+
+(os dadosT26.txt que o professor irá disponibilizar tem outros nomes)
+
+Este código também detecta, mesmo que precariamente, se o arquivo 
+binário está bem formado. Exemplo: se você gerar o arquivo dados.bin
+usando STRMAX sendo 200 e tentar ler usando STRMAX 100, não funciona.
+O programa que gera o BIN tem que usar a MESMA ESTRUTURA, com o mesmo
+tamanho do programa que lê.
+
+
+Recaptulando: o que temos? Temos um arquivo dados.bin que você mesmo gerou,
+usando o T25 do professor. E que você testou usando o leFuncBinT26.
+
+O exercício T26 irá usar APENAS e tão somente o dados.bin. Será como se 
+fosse um banco de dados. Caso dê problemas, você sempre pode apagar o dados.bin
+e criar novamente. Pode maner uma cópia com outro nome, etc.
+
+O T26 será um progrma para manipular o dados.bin SEM USAR VETORES!!
+
+Uma parte que envolve manipulação de "menus" já está implementada.
+Seu grupo deve CONTINUAR o trabalho.
+
+NÃO PODE, REPETINDO, NÃO PODE LER TODO O bin PARA UM VETOR e trabalhar
+em memória. Este procedimento está VEDADO. Pode ler apenas UM de cada
+vez.
+
+Teu programa deverá ler e escrever no arquivo bin.
+
+a) Solicitar um nome. Ler este nome. Imprimir os demais dados do funcionário
+que tem este nome (desconsiderar letras maiúsculas e minúsculas). Imprimir
+também qual a posição deste funcionário no aquivo (se ele é o primeiro do
+arquivo, então ele é posição 0, se ele é o segundo, posição 1, como se 
+fosse vetor).
+
+b) Imprimir os dados do funcionário X, sendo X um valor de 0 a QTD-1.
+Se X for 5, deve imprimir os dados do funcionario [5] se ele estivesse
+em um vetor. NÃO VALE ler os anteriores a ele. Tem que ir direto na posição.
+
+c) Corrigir os dados de um funcionário. Pede-se o indice de um funcionário
+(para saber o indice pode-se usar o item a, de pesquisar).
+Leia ele no arquivo, imprima os dados atuais que estão no arquivo,
+usuário digita os novos dados, salva os novos dados
+na posição correta do arquivo bin (não vale gerar um novo).
+
+Observe que o T26 não faz o arquivo crescer, pois não foi pedido cadastro.
+caso queiras brincar cadastrando mais dados, use o T25 sem os nomes dos 
+arquivos, isto é, sem parâmetro algum.
+
+Revisando:
+
+Arquivos que você precisa:
+
+- DefT26-Ap3.txt   com a definição (este aqui que você tá lendo)
+
+- RespT25-Ap3.c    com a resposta do T25: para que você use ele para gerar um
+  ou mais arquivos dados.bin. Só baixar e compilar
+
+- leFuncBinT26.c   um código que apenas testa se o teu dados.bin está correto.
+  Ele lê o arquivo que você passar e imprime os funcionários encontrados. 
+  Somente para testes
+  
+- dadosT26.txt     um TXT com alguns funcionários, para ser usado pelo RespT25
+  para que este gere um dados.bin.
+  
+- T26-inicio.c     uma parte já implementada do T26. É somente aqui que o teu
+  grupo irá programar. Irá continuar este código.
+  
+
+
+Porque eu não gero e divulgo um dados.bin? Porque pode não funcionar. Se eu
+gerar um dados.bin, será na minha arquitetura e com o meu compilador. Digamos
+que no meu computador cada funcionário ocupou 308 bytes de tamanho. Então
+dez funcionários ocuparão 3084 bytes no arquivo (4 do quantidade). 
+Só que se você for ler este dados.bin no teu programa, na tua arquitetura
+e no teu compilador, pode ser que ai um funcionário tenham 304 bytes
+(o alinhamento de memória pode ser diferente). Eu não poderia ter certeza
+de que o meu dados.bin seria igual para todo mundo.
+

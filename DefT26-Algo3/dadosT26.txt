@@ -1,0 +1,82 @@
+16
+
+Raryson Pereira Rost
+Minha rua
+0001
+5000
+
+Pedro da Silva 2
+Rua do pedro da d Silva, numero do da Silva
+1233
+324
+
+Joao Feitoria 4
+Rua do Joao
+1343
+22562.56
+
+Carlitos 3 de Souza
+Rua Carlitos crazilda
+8983
+1234.45
+
+Belanilso 2 Fonseca
+Rua Sao joao2 bela vista
+923
+897.75
+
+Jose 2 jose Josemildo Jr
+Rua sao sepe
+666
+500.00
+
+Pedro da 2 Silva
+Rua do pedro da Silva, numero do da Silva
+123
+3242
+
+Joao Feitoria
+Rua do Joao
+343
+2562.56
+
+Carlitos de Souza
+Rua Carlitos crazilda
+8983
+1234.45
+
+Belanilso Fonseca
+Rua Sao joao bela vista
+9231
+8987.75
+
+Jose jose Josemildo Jr
+Rua sao sepe
+666
+500.00
+
+Pedroso da Silva
+Rua do asda  pedro da Silva, numero do da Silva
+12367
+32424
+
+Joao 4sdgfd Feitoria
+Rua do Joaogf sdgsdf fdsg sd
+3437
+2569.60
+
+Carlitos fasdf  de Souza
+Rua Carlitos crazilda
+8983
+1234.45
+
+Belanilso Fonseca af sad
+Rua Sao joao bela vista
+9231
+8987.75
+
+Jose jose Josemildo Jr dfadsf
+Rua sao sepe af dsf ads
+6666
+5000.00
+
