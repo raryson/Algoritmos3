@@ -1,9 +1,9 @@
 /* Comente o define abaixo se estiver no DOS/Windows */
-#define LINUX
+//#define LINUX
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#define MAXSTRING 10000
 ///* Coisas que no DOS é de um jeito e no Linux é de outro */
 //#ifdef LINUX
 ///* ----------------------- LINUX ONLY ----------------------------*/
@@ -100,6 +100,11 @@ char menu()
  * Esta função não está sendo chamada no main. Não faz parte do T26. Está
  * aqui para inspiração e testes.
  * */
+ 
+ int safeFflush(){
+	while(fgetc(stdin)!='\n');    
+}
+
 int impFuncBin(FILE * arq)
 {
     int i, qtd;
@@ -164,6 +169,200 @@ int impFuncBin(FILE * arq)
 }
 
 
+             
+int lestring(char s[], int max)
+{
+    int i = 0;
+    char letra;
+
+    for (i = 0; i < (max - 1); i++) {
+    
+        letra = fgetc(stdin);
+
+        if ((letra == '\n') && (i == 0)) {
+            i = i - 1;
+            continue;
+        }
+
+      
+        if (letra == '\n')
+            break;
+
+        s[i] = letra;
+    }
+
+    s[i] = 0;                   
+    return (i);
+}
+
+int strCompare(char str1[], char str2[]){
+	int contador;
+	
+	for(contador = 0; str1[contador]; contador++){
+		  
+		if(str1[contador] - str2[contador] == 0){
+			continue;
+		}else{
+			return(str1[contador] - str2[contador]);		
+		}
+		
+	}
+	return(str1[contador] - str2[contador]);	
+}
+
+int transformaMaiuscula(char *frases){
+	int contador;
+	for(contador = 0; frases[contador]; contador++){
+		if((frases[contador] >= 'A') && (frases[contador] <= 'Z') || frases[contador] == ' ' || (frases[contador] >= '1' && frases[contador] <= '9' )){
+			continue;
+		}
+		frases[contador] = frases[contador] -32 ;
+	}
+}
+
+
+
+int pesquisaIndex(FILE * arq, int qtd){
+	   /* Usar função:
+             * - solicitar um inteiro de 0 a qtd-1
+             * - ir, por fseek, direto na posição do arquivo onde está este funcionário
+             * - imprimir os seus dados
+             * - Voltar a este menu
+             * */
+    
+	int checaValido, i, comparacao = 0, index, pos, onde, x;
+	
+	do{
+		printf("\nDigite um numero de 0 a %d\n", qtd-1);
+	
+		
+		x = scanf("%d", &index);
+		safeFflush();
+		if(index >= 0 && index <= qtd-1){
+		
+			x = 1;
+		}else{
+			x = 2;
+		}
+	}while(x != 1);
+	
+		
+
+	onde = ftell(arq);  
+
+
+	pos = sizeof(int) + (index * sizeof(struct FUNC));
+	
+	 if (fseek(arq, pos, SEEK_SET) != 0) {
+            /* fseek retorna ZERO se conseguiu ir na posição pretendida */
+            fprintf(stderr, "# ERRO impFuncBin: fseek não pode ir onde queria\n");
+            return (i);
+    }
+	
+	struct FUNC func;
+	
+	
+	if (fread(&func, sizeof(struct FUNC), 1, arq) == 0) {
+            fprintf(stderr, "# ERRO impFuncBin: não pude ler func %d.", i);
+            fprintf(stderr, "Arquivo binário está correto?\n");
+            fseek(arq, onde, SEEK_SET);
+            return (0);
+    }
+    printf("[%d] => \"%s\", \"%s\", \"%d\", \"%lf\"\n", index, func.nome, func.endereco, func.reg, func.sal);
+    
+    return(index);
+             
+             
+}
+
+
+int alteraBin(FILE * arq, int qtd){
+
+		int index  = pesquisaIndex(arq, qtd), pos, onde;
+		int checaSeFor;
+	
+		printf("\nDigite os novos dados para esse funcionario\n");
+		struct FUNC func;
+		
+		    impFuncBin(arq);
+		
+		printf("\nO nome sera: ");
+		lestring(func.nome, MAXSTRING);
+		printf("\nO NOME E %s\n", func.nome);
+		printf("\nO numero sera: ");
+		scanf("%d", &func.reg);
+		printf("\nO endereco sera: ");
+		lestring(func.endereco, MAXSTRING);
+		printf("\nO salario sera: ");
+		scanf("%lf", &func.sal);
+		
+		pos = sizeof(int) + (index * sizeof(struct FUNC));
+	
+		if (fseek(arq, pos, SEEK_SET) != 0) {
+            /* fseek retorna ZERO se conseguiu ir na posição pretendida */
+            fprintf(stderr, "# ERRO impFuncBin: fseek não pode ir onde queria\n");
+            return (1);
+   		}
+   		checaSeFor = fwrite(&func, sizeof(struct FUNC) , 1, arq);
+   		if(checaSeFor==0){
+   			return(0);
+		   }else{
+		   	return (1);
+		}
+		
+
+             
+             
+}
+
+int pesquisaNome(FILE * arq, int qtd){
+	
+	 /* Usar função:
+             * - pedir um nome (ler em uma string)
+             * - procurar o nome no arquivo binário, um a um, desconsiderando
+             *   maiúsculas e minúsculas (você guardou aquelas funções de string, não?)
+             * - se achar um funcionário com aquele nome, imprimir a posição dele
+             *   e os seus demais dados (se ele é o primeiro do arquivo, então ele
+             *   é posição ZERO)
+             * - Encerrar e voltar aqui, neste menu.
+             * - Se existirem mais de um funcionário com o mesmo nome (não deveria), 
+             *   considerar apenas o primeiro encontrado)
+             * */
+
+	char nome[MAXSTRING];
+	int checaValido, i, comparacao = 0;
+	
+	
+	printf("\nDigite um nome para ser pesquisado\n");	
+	lestring(nome, MAXSTRING);
+
+	
+	struct FUNC func;
+
+	
+	for(i = 0; i < qtd; i++){
+		
+		checaValido = fread(&func, sizeof(struct FUNC), 1, arq);
+		if(checaValido == 1){
+			
+			transformaMaiuscula(nome);
+			transformaMaiuscula(func.nome);
+			comparacao = strCompare(nome, func.nome);
+			if(comparacao == 0){
+				 printf("[%d] => \"%s\", \"%s\", \"%d\", \"%lf\"\n", i, func.nome, func.endereco, func.reg, func.sal);
+				 return(0);
+			}
+			
+		}else{
+			printf("\n\nAconteceu algum erro na leitura da Struct\n");
+			return(1);
+		}
+	}
+
+	
+}
+
+
 int main(int argc, char *argv[])
 {
     char opcao;
@@ -186,16 +385,6 @@ int main(int argc, char *argv[])
 		return(1);
 	}
 
-    /* Itens a serem programados aqui:
-     * - Variáveis
-     * - abrir arquivo que vem de argv[1] como binário
-     * - ler quantidade de itens
-     * - deixar aberto para leitura e escrita 
-     * - se Não conseguiu abrir ou se não tem itens, abortar (só funciona
-     *   com um arquivo com funcionários em BINÁRIO.
-     * - Todas as funções devem receber o FILE do arquivo já aberto
-     *   no modo que permita ler e escrever.
-     * */
      
     checaValido = fread(&tamanho, sizeof(int), 1, arq);
     if(checaValido != 1){
@@ -208,43 +397,22 @@ int main(int argc, char *argv[])
     for (opcao = menu(); opcao != 'S'; opcao = menu()) {
         switch (opcao) {
         case 'P':
-        	printf("\t\t%d\t\t", tamanho);
-        	printf("Digite um nome para ser lido na String");
-        	  /* Usar função:
-             * - pedir um nome (ler em uma string)
-             * - procurar o nome no arquivo binário, um a um, desconsiderando
-             *   maiúsculas e minúsculas (você guardou aquelas funções de string, não?)
-             * - se achar um funcionário com aquele nome, imprimir a posição dele
-             *   e os seus demais dados (se ele é o primeiro do arquivo, então ele
-             *   é posição ZERO)
-             * - Encerrar e voltar aqui, neste menu.
-             * - Se existirem mais de um funcionário com o mesmo nome (não deveria), 
-             *   considerar apenas o primeiro encontrado)
-             * */
+        	pesquisaNome(arq, tamanho);
+        
              
             break;
         case 'B':
-            /* Usar função:
-             * - solicitar um inteiro de 0 a qtd-1
-             * - ir, por fseek, direto na posição do arquivo onde está este funcionário
-             * - imprimir os seus dados
-             * - Voltar a este menu
-             * */
+        	pesquisaIndex(arq, tamanho);
+           
             break;
         case 'A':
-            /* UNICA OPÇÃO QUE ESCREVE NO ARQUIVO 
-             * O arquivo está SEMPRE ABERTO 
-             * Usar função: 
-             * - ler o indice de 0 a qtd-1
-             * - Usar a mesma função 'B' para obter e inmprimir os dados do funcionário
-             * - Ler em uma variável novos dados para este funcionário
-             * - Atualizar na posição correta os dados deste funcionário
-             * (não vale fazer em outro arquivo, PRECISA ir na posição do arquivo
-             * onde ele está e salvar em cima)
-             * */
+        	alteraBin(arq, tamanho);
+         
             break;
         case 'S':
             /* Fechar arquivo binário, encerrar programa */
+            
+            fclose(arq);
             break;
         }
         pausa();

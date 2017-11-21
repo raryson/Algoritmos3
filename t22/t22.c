@@ -228,9 +228,15 @@ int main(int x, char *valor[]){
 		} while(quantidade <= 0 || scanfQuant != 1);	
 	}else{
 		quantidade = atoi(valor[1]);
+		do{
+			func = malloc(quantidade * (sizeof(struct FUNCIONARIO)));
+			if(malloc == NULL){
+				safeFflush(); 
+				printf("#Digite a quantidade de pessoas da sua empresa:\n");
+				scanfQuant = scanf("%d", &quantidade);
+			}
+		}while(func == NULL);
 	}
-	
-
 	
 	for(i = 0; i < quantidade; i++){
 		cadastraFunc(func, i);		
